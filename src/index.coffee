@@ -10,6 +10,7 @@ app = express()
 # Set up socket.io
 server = require('http').createServer(app)
 io = require('socket.io').listen(server)
+app.io = io
 
 # Define Port
 app.port = process.env.PORT or process.env.VMC_APP_PORT or 3000
@@ -20,7 +21,7 @@ config = require "./config"
 app.configure 'production', 'development', 'testing', ->
   config.setEnvironment app.settings.env
 
-#### View initialization 
+#### View initialization
 # Add Connect Assets.
 app.use assets()
 # Set the public folder as static assets.
@@ -45,9 +46,6 @@ app.use express.json()
 routes = require './routes'
 routes(app)
 
-
-# Export application object
-module.exports =
-  server: server
-  port: app.port
-
+# Start server
+server.listen 3000, ->
+  console.log 'Listening on 3000'
