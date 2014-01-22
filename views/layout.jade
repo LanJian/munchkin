@@ -13,12 +13,22 @@ head
 
   // CSS
   != css('lib/bootstrap.min')
+  != css('lib/flat-ui.css')
   != css('app')
   
 body
   block content
 
   script(src='/socket.io/socket.io.js')
+  != js('lib/jquery-ui-1.10.3.custom.min.js')
+  != js('lib/jquery.ui.touch-punch.min.js')
+  != js('lib/bootstrap-select.js')
+  != js('lib/bootstrap-switch.js')
+  != js('lib/flatui-checkbox.js')
+  != js('lib/flatui-radio.js')
+  != js('lib/jquery.tagsinput.js')
+  != js('lib/jquery.placeholder.js')
+
   != js('lib/jquery-2.0.3.min')
   != js('lib/bootstrap.min')
   != js('lib/pixi')
