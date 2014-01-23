@@ -1,23 +1,7 @@
 extends layout
 block content
-  .navbar.navbar-fixed-top.navbar-inverse
-    a.navbar-brand#game-title Munchkin Online
   //-.container.center-block#canvas-container
     //-canvas#canvas(tabindex='0', width=1280, height=800)
       //-Browser not compatible with HTML5 canvas
   .container
-    .panel.panel-success
-      .panel-heading Available Games
-      .panel-body Select a game below to join or create your own game!
-      .list-group
-        a.list-group-item(href='#')
-          = 'Game 1'
-          span.fui-arrow-right.pull-right
-        a.list-group-item(href='#')
-          = 'Game 2'
-          span.fui-arrow-right.pull-right
-        a.list-group-item(href='#')
-          = 'Game 3'
-          span.fui-arrow-right.pull-right
-    button.btn.btn-primary Create Game
-    button.btn.btn-info Join Game
+    a.btn.btn-primary#create-game-btn(href='/new') Create Game

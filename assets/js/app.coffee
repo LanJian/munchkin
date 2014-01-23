@@ -3,4 +3,5 @@ $(document).ready ->
 
 init = ->
   console.log 'lets go!'
-  socket = io.connect 'http://localhost:3000'
+  #socket = io.connect 'http://localhost:3000'
+

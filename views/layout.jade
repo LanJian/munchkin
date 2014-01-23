@@ -17,6 +17,9 @@ head
   != css('app')
   
 body
+  .navbar.navbar-fixed-top.navbar-inverse
+    a.navbar-brand#game-title Munchkin Online
+
   block content
 
   script(src='/socket.io/socket.io.js')
