@@ -2,5 +2,11 @@ extends layout
 block content
   .container.center-block#canvas-container
     p Game ID: #{gameId}
+    p#num-players Number of players: 1
+    a.btn.btn-primary#start-game-btn Start Game
     canvas#canvas(tabindex='0', width=1280, height=800)
       Browser not compatible with HTML5 canvas
+
+block js
+  != js('lib/pixi')
+  != js('app')

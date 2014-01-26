@@ -7,11 +7,21 @@ module.exports = class Game
     @players = {}
 
   addPlayer: (socket) ->
-    console.log "add player #{socket.id}"
     @players[socket.id] = new Player socket
     socket.join @id
-    console.log @io.sockets.manager.rooms
+    @initCallbacks socket
+    console.log @players
+    @io.sockets.in(@id).emit 'dirty', ['getPlayers']
 
   removePlayer: (socket) ->
     delete @players[socket.id]
     socket.leave @id
+    @io.sockets.in(@id).emit 'dirty', ['getPlayers']
+
+  initCallbacks: (socket) ->
+    socket.on 'getPlayers', =>
+      console.log @players
+      data = []
+      for k, v of @players
+        data.push {id: k, name: v.name}
+      socket.emit 'updatePlayers', data
