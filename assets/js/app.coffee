@@ -13,13 +13,18 @@ initCallbacks = (socket) ->
     for event in toPoll
       socket.emit event
 
-  socket.on 'updatePlayers', (players) ->
-    console.log players
-    $('p#num-players').text "Number of players: #{players.length}"
+  socket.on 'updatePlayers', (data) ->
+    console.log data
+    $('p#num-players').text "Number of players: #{data.players.length}"
+    console.log data.leader.id, data.me.id
+    if data.leader.id == data.me.id
+      console.log 'yoyoo'
+      console.log $('a#start-game-btn')
+      $('a#start-game-btn').removeClass 'invisible'
 
 
 initListeners = ->
-  $('btn#start-game-btn').click ->
+  $('a#start-game-btn').click ->
     startGame()
 
 startGame = ->

@@ -7,10 +7,12 @@ module.exports = class Game
     @players = {}
 
   addPlayer: (socket) ->
-    @players[socket.id] = new Player socket
+    player = new Player socket
+    @players[socket.id] = player
     socket.join @id
     @initCallbacks socket
-    console.log @players
+    if Object.keys(@players).length == 1
+      @setLeader player
     @io.sockets.in(@id).emit 'dirty', ['getPlayers']
 
   removePlayer: (socket) ->
@@ -18,10 +20,16 @@ module.exports = class Game
     socket.leave @id
     @io.sockets.in(@id).emit 'dirty', ['getPlayers']
 
+  setLeader: (player) ->
+    @leader = player
+    player.isLeader = true
+
   initCallbacks: (socket) ->
     socket.on 'getPlayers', =>
-      console.log @players
-      data = []
-      for k, v of @players
-        data.push {id: k, name: v.name}
+      data = {players: []}
+      for id, player of @players
+        data.players.push player.getData()
+        if id == socket.id
+          data.me = player.getData()
+      data.leader = @leader.getData()
       socket.emit 'updatePlayers', data

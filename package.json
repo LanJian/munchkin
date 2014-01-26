@@ -22,7 +22,8 @@
 		"markdown": "0.4.0",
 		"which": "1.0.5",
 		"wrench": "1.5.1",
-    "socket.io": "0.9.*"
+    "socket.io": "0.9.*",
+    "moniker": "0.1.*"
 	}, 
 	"devDependencies": {
 		"coffee-script": "*",
