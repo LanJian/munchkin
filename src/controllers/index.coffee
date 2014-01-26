@@ -1,3 +1,4 @@
+Game = require '../game/game'
 
 module.exports = (app) ->
 
@@ -16,7 +17,7 @@ module.exports = (app) ->
     # able to create another one
     gameId = req.sessionID
     if !games[gameId]
-      games[req.sessionID] = []
+      games[gameId] = new Game gameId, io
       res.redirect 303, "/#{req.sessionID}"
     else
       res.send "you are already in a game: #{gameId}"
@@ -24,10 +25,14 @@ module.exports = (app) ->
 
   app.get '/:gameId', (req, res) ->
     gameId = req.params.gameId
-    console.log games
-    if !games[gameId]
+    game = games[gameId]
+    if !game
       res.send 404, "game #{gameId} not found"
     else
+      io.sockets.once 'connection', (socket) ->
+        game.addPlayer socket
+        socket.on 'disconnect', ->
+          game.removePlayer socket
       res.render 'game',
         gameId: gameId
 
