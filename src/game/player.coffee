@@ -1,10 +1,12 @@
 Moniker = require 'moniker'
+Util = require '../util'
 
 module.exports = class Player
 
   constructor: (@socket) ->
     @id = @socket.id
-    @name = Moniker.choose()
+    names = Moniker.generator([Moniker.adjective, Moniker.noun], {glue: ' '})
+    @name = Util.capitalize names.choose()
     @isLeader = false
     @level = 1
     @race = 'human'
