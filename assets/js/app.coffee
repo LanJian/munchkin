@@ -1,31 +1,61 @@
 $(document).ready ->
-  init()
+  game = new Game()
+  game.init()
 
-init = ->
-  console.log 'lets go!'
-  socket = io.connect 'http://localhost:3000'
-  initCallbacks socket
-  initListeners()
+class Game
+  constructor: ->
 
-initCallbacks = (socket) ->
-  socket.on 'dirty', (toPoll) ->
-    console.log toPoll
-    for event in toPoll
-      socket.emit event
+  init: ->
+    @socket = io.connect 'http://localhost:3000'
+    @initCallbacks()
+    @initListeners()
 
-  socket.on 'updatePlayers', (data) ->
-    console.log data
-    $('p#num-players').text "Number of players: #{data.players.length}"
-    console.log data.leader.id, data.me.id
-    if data.leader.id == data.me.id
-      console.log 'yoyoo'
-      console.log $('a#start-game-btn')
-      $('a#start-game-btn').removeClass 'invisible'
+    setTimeout ( =>
+      $('#game-nav').fadeOut()
+    ), 2000
+
+  initCallbacks: () ->
+    @socket.on 'dirty', (toPoll) =>
+      for event in toPoll
+        @socket.emit event
+
+    @socket.on 'updatePlayers', (data) =>
+      console.log data
+      $('#player-container').empty()
+      for player in data.players
+        item = $('#player-template').clone()
+        item.removeClass 'hidden'
+        item.removeAttr 'id'
+        item.attr 'title', player.name
+        item.tooltip()
+        if data.me.id == player.id
+          item.addClass 'player-me'
+        $('#player-container').append(item)
+      if data.leader.id == data.me.id
+        $('a#start-game-btn').removeClass 'invisible'
 
 
-initListeners = ->
-  $('a#start-game-btn').click ->
-    startGame()
+  initListeners: ->
+    $('a#start-game-btn').click =>
+      @startGame()
 
-startGame = ->
-  socket.emit 'startGame'
+    $('input#enter-name').blur =>
+      @setName $('input#enter-name').val()
+    $('input#enter-name').keypress (e) =>
+      if e.which == 13
+        $('input#enter-name').trigger 'blur'
+
+
+  startGame: ->
+    @socket.emit 'startGame'
+
+
+  setName: (name) ->
+    console.log $('.player-me')
+    setTimeout ( ->
+      $('.player-me').trigger 'mouseenter'
+    ), 100
+    setTimeout ( ->
+      $('.player-me').trigger 'blur'
+    ), 2100
+    @socket.emit 'setName', {name: name}

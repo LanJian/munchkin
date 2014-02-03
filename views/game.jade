@@ -1,11 +1,21 @@
 extends layout
 block content
-  .container.center-block#canvas-container
-    p Game ID: #{gameId}
-    p#num-players Number of players: 1
-    a.btn.btn-primary.invisible#start-game-btn Start Game
-    canvas#canvas(tabindex='0', width=1280, height=800)
-      Browser not compatible with HTML5 canvas
+  div
+    //-.container.center-block#canvas-container
+      //-p Game ID: #{gameId}
+      //-p#num-players Number of players: 1
+      //-a.btn.btn-primary.invisible#start-game-btn Start Game
+      //-canvas#canvas(tabindex='0', width=1280, height=800)
+        //-Browser not compatible with HTML5 canvas
+    .overlay
+    .container#overlay-container
+      input.form-control#enter-name(type='text', placeholder="Enter your name")
+      #player-template.player-icon.pull-left.hidden(data-toggle='tooltip', data-placement='bottom', title='')
+        span.fui-user
+      #player-container
+      .clearfix
+      a.btn.btn-primary.invisible#start-game-btn Start Game
+
 
 block js
   != js('lib/pixi')
